@@ -1,11 +1,25 @@
 {
-    "name": "my-node12-app",
+    "name": "my-app",
+    "author": "Me",
     "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
+    "description": "This is a boiler plate for running node.js backend and frontend",
     "scripts": {
-      "start": "node index.js"
+      "dev": "concurrently \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+      "build": "npm run build -w backend -w frontend",
+      "start": "concurrently \"npm run start -w backend\" \"npm run start -w frontend\"",
+      "test": "npm run test -w frontend",
+      "type:check": "npm run type:check -w backend -w frontend",
+      "lint:fix": "npm run lint:fix -w backend -w frontend",
+      "lint:check": "npm run lint:check -w backend -w frontend",
+      "format:fix": "npm run format:fix -w backend -w frontend",
+      "format:check": "npm run format:check -w backend -w frontend"
     },
-    "dependencies": {
+    "workspaces": [
+      "frontend",
+      "backend"
+    ],
+    "devDependencies": {
+      "concurrently": "^8.2.2",
+      "prettier": "^3.2.4"
     }
   }

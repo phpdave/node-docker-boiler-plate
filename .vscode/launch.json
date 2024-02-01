@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "pwa-node",
+        "request": "attach",
+        "name": "Attach to Docker",
+        "address": "localhost",
+        "port": 9229,
+        "localRoot": "${workspaceFolder}/frontend/src",
+        "remoteRoot": "/usr/src/app/frontend",
+        "skipFiles": ["<node_internals>/**"],
+        "resolveSourceMapLocations": [
+          "${workspaceFolder}/frontend/src/**",
+          "!**/node_modules/**"
+        ],
+        "sourceMaps": true,
+        "smartStep": true,
+        "restart": true
+      },
+      
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "Launch Chrome against localhost",
+        "url": "https://local_reverse_proxy_my_app:4203/",
+        "webRoot": "${workspaceFolder}"
+    }
+    ]
+  }
+  

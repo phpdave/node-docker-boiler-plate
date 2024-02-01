@@ -20,6 +20,7 @@ echo "Docker daemon is ready."
 
 # Run docker-compose up --build
 echo "Building and starting the Docker container..."
+cd ..
 docker-compose up --build &
 
 # Wait for the container to be ready

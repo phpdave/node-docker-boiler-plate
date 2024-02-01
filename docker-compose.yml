@@ -1,12 +1,59 @@
 version: "3.8"
 services:
-  app:
-    build: .
-    container_name: my-node12-app
-    ports:
-      - "3000:3000"
+  backend:
+    build:
+      context: backend/src
+      dockerfile: Dockerfile.local
+    container_name: backend_my_app
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./backend/src:/usr/src/app/backend
+    networks:
+      - default
+      - shared
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
+      - IS_LOCAL=true
+    networks:
+      - shared-local-network
+    ports:
+      - "9229:9229" # Node.js debugger
+  frontend:
+    build:
+      context: frontend/src
+      dockerfile: Dockerfile.local
+    container_name: frontend_my_app
+    volumes:
+      - ./frontend/src:/usr/src/app/frontend
+      - /usr/src/app/frontend/node_modules
+      - /usr/src/app/frontend/.next
+    environment:
+      - NODE_ENV=production
+      - IS_LOCAL=true
+    networks:
+      - shared-local-network
+  reverse-proxy:
+    container_name: local_reverse_proxy_my_app
+    depends_on:
+      - frontend
+      - backend
+    image: caddy:latest
+    ports:
+      - "4203:4203"
+      - "4201:4201"
+    volumes:
+      - ./reverseproxy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy-logs:/var/log/caddy
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - shared-local-network
+      
+
+networks:
+  shared-local-network:
+    driver: bridge
+
+volumes:
+  caddy-logs:
+  caddy-data:
+  caddy-config:
