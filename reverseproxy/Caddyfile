@@ -1,0 +1,37 @@
+https://local_reverse_proxy_my_app:4203 {
+    tls internal
+    log {
+            output file /var/log/caddy/reverse-proxy-frontend-access.log
+    }
+    encode gzip
+
+    handle {
+        reverse_proxy  {
+            to frontend_my_app:4203
+            transport http {
+                tls
+                tls_insecure_skip_verify
+                read_buffer 8192 
+            }
+        }
+    }
+}
+
+https://local_reverse_proxy_my_app:4201 {
+    tls internal
+    log {
+            output file /var/log/caddy/reverse-proxy-backend-access.log
+    }
+    encode gzip
+
+    handle {
+        reverse_proxy {
+            to backendend_my_app:4201
+            transport http {
+                tls
+                tls_insecure_skip_verify
+                read_buffer 8192
+            }
+        }
+    }
+}

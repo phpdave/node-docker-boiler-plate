@@ -1,0 +1,30 @@
+name: Lint
+
+on:
+  pull_request:
+    branches:
+      - main
+      - development
+  push:
+    branches:
+      - main
+      - development
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull Source
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Install
+        run: npm ci
+
+      - name: Type Check
+        run: npm run type:check
+
+      - name: Lint Check
+        run: npm run lint:check
