@@ -2,14 +2,11 @@ version: "3.8"
 services:
   backend:
     build:
-      context: backend/src
-      dockerfile: Dockerfile.local
+      context: backend
+      dockerfile: Dockerfile.backend
     container_name: backend_my_app
     volumes:
       - ./backend/src:/usr/src/app/backend
-    networks:
-      - default
-      - shared
     environment:
       - NODE_ENV=production
       - IS_LOCAL=true
@@ -19,8 +16,8 @@ services:
       - "9229:9229" # Node.js debugger
   frontend:
     build:
-      context: frontend/src
-      dockerfile: Dockerfile.local
+      context: frontend
+      dockerfile: Dockerfile.frontend
     container_name: frontend_my_app
     volumes:
       - ./frontend/src:/usr/src/app/frontend
